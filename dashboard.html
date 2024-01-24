@@ -5,15 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard - Tutors App</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cdbootstrap/css/bootstrap.min.css"/> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cdbootstrap/css/cdb.min.css"/> -->
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true"
+    <!-- <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true"
         style="position: fixed; bottom: 0; right: 0;">
         <div class="d-flex">
             <div class="toast-body" style="color: green;">
@@ -21,10 +23,10 @@
             </div>
             <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-    </div>
+    </div> -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.html"><strong>My tutors app</strong></a>
+        <div class="container-fluid" id="navbarContainer">
+            <a class="navbar-brand nav-item1" href="dashboard.html"><strong>My tutors app</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -32,15 +34,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <span id="usernamePlaceholder"></span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                              </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                <path fill-rule="evenodd"
+                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                            </svg>
                         </a>
                         <ul class="dropdown-menu ms-auto" style="right: 0%;">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -48,13 +52,181 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item sign-out-option" href="#">Sign out</a></li>
+                            <li><a class="dropdown-item sign-out-option" style="cursor: pointer;">Sign out</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky sidebar-cont">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="dashboard.html">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                All requests
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                All proposals
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="content">
+                    <div class="container mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Your Requests</h5>
+
+                                <!-- Horizontal scroll container -->
+                                <div class="row flex-nowrap overflow-auto scroll-container">
+
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 1</h5>
+                                                <p class="card-text">Withdrawal Amount: $50</p>
+                                                <button class="btn btn-danger">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 2</h5>
+                                                <p class="card-text">Withdrawal Amount: $30</p>
+                                                <button class="btn btn-danger">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 3</h5>
+                                                <p class="card-text">Withdrawal Amount: $70</p>
+                                                <button class="btn btn-danger">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add more cards as needed -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Proposals</h5>
+
+                                <!-- Horizontal scroll container -->
+                                <div class="row flex-nowrap overflow-auto scroll-container">
+
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 1</h5>
+                                                <p class="card-text">Withdrawal Amount: $50</p>
+                                                <button class="btn btn-primary">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 2</h5>
+                                                <p class="card-text">Withdrawal Amount: $30</p>
+                                                <button class="btn btn-primary">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 3</h5>
+                                                <p class="card-text">Withdrawal Amount: $70</p>
+                                                <button class="btn btn-primary">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card custom-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User 3</h5>
+                                                <p class="card-text">Withdrawal Amount: $70</p>
+                                                <button class="btn btn-primary">Withdraw</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add more cards as needed -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3 reqForm">
+                        <div class="mb-3">
+                            <input type="text" placeholder="Subject" class="form-control" id="recipient-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" placeholder="Preferred area and short description" class="form-control"
+                                id="description" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">PKR</span>
+                            </div>
+                            <input type="number" id="amount" class="form-control" placeholder="Enter amount range"
+                                aria-label="Username" aria-describedby="basic-addon1" min="0" max="99999999" required>
+                        </div>
+                        <label for="timeTo" class="col-form-label">Time slot: </label>
+                        <div class="input-group mb-3">
+                            <input type="time" id="timeFrom" class="form-control timeFrom" value="00:00" required>
+                            <span class="input-group-text">-</span>
+                            <input type="time" id="timeTo" class="form-control timeTo" value="12:00" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary generate-btn">Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <h4></h4>
     <script type="module" src="src/firebaseConfig.js"></script>
     <script type="module" src="src/dashboard.js"></script>
