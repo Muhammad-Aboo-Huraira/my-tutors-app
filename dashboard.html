@@ -65,21 +65,34 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky sidebar-cont">
                     <ul class="nav flex-column">
+                    <div class="tab"> 
                         <li class="nav-item">
                             <a class="nav-link active" href="dashboard.html">
                                 Dashboard
                             </a>
                         </li>
+                    </div>
+                    <div class="tab"> 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="allrequests.html">
                                 All requests
                             </a>
                         </li>
+                    </div>
+                    <div class="tab"> 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="allproposals.html">
                                 All proposals
                             </a>
                         </li>
+                    </div>
+                    <div class="tab" id="requestTeacherLink"> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="request.html">
+                                Request teacher
+                            </a>
+                        </li>
+                    </div>
                     </ul>
                 </div>
             </nav>
@@ -87,59 +100,33 @@
             <!-- Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="content">
-                    <div class="container mt-5">
+                    <div class="container mt-5  requestCards">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Your Requests</h5>
+                                <div style="display: flex;
+                                justify-content: space-between;
+                                align-items: center;">
+                                <h5 class="card-title">Recent Requests</h5>
+                                <span><a href="allrequests.html">See all</a></span>
+                            </div>
 
                                 <!-- Horizontal scroll container -->
-                                <div class="row flex-nowrap overflow-auto scroll-container">
+                                <div class="row flex-nowrap overflow-auto" id="cardContainer">
 
-                                    <div class="col-md-4">
-                                        <div class="card custom-card">
-                                            <div class="card-body">
-                                                <h5 class="card-title">User 1</h5>
-                                                <p class="card-text">Withdrawal Amount: $50</p>
-                                                <button class="btn btn-danger">Withdraw</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="card custom-card">
-                                            <div class="card-body">
-                                                <h5 class="card-title">User 2</h5>
-                                                <p class="card-text">Withdrawal Amount: $30</p>
-                                                <button class="btn btn-danger">Withdraw</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="card custom-card">
-                                            <div class="card-body">
-                                                <h5 class="card-title">User 3</h5>
-                                                <p class="card-text">Withdrawal Amount: $70</p>
-                                                <button class="btn btn-danger">Withdraw</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Add more cards as needed -->
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container mt-5">
+                    <div class="container mt-5 proposalCards">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Proposals</h5>
 
                                 <!-- Horizontal scroll container -->
-                                <div class="row flex-nowrap overflow-auto scroll-container">
+                                <div class="row">
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 mb-4">
                                         <div class="card custom-card">
                                             <div class="card-body">
                                                 <h5 class="card-title">User 1</h5>
@@ -189,7 +176,28 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      
+
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -226,7 +234,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
     <h4></h4>
     <script type="module" src="src/firebaseConfig.js"></script>
     <script type="module" src="src/dashboard.js"></script>
