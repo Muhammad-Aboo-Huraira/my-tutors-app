@@ -126,7 +126,40 @@
       </div>
     </div>
   </div>
-  
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Send proposal</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3 reqModal">
+                    <div class="mb-3">
+                        <input type="text" placeholder="Qualifications" class="form-control" id="recipient-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" placeholder="Experience or short description" class="form-control"
+                            id="description" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">PKR</span>
+                        </div>
+                        <input type="number" id="amount" class="form-control" placeholder="Enter amount"
+                            aria-label="Username" aria-describedby="basic-addon1" min="0" max="99999999" required>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary generate-btn">Generate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     <script type="module" src="src/firebaseConfig.js"></script>
     <script type="module" src="src/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
