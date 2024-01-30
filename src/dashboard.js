@@ -56,7 +56,6 @@ onAuthStateChanged(auth, async (user) => {
             window.location.href.includes("dashboard.html") ||
             window.location.href.includes("request.html")
           ) {
-            
             if (window.location.href.includes("request.html")) {
               const requestForm = document.querySelector(".reqForm");
               const submitButton = requestForm.querySelector(
@@ -159,37 +158,42 @@ onAuthStateChanged(auth, async (user) => {
               function createProposalCard(data1) {
                 const cardDiv1 = document.createElement("div");
                 cardDiv1.className = "col-md-4 mb-4";
-  
+
                 const card1 = document.createElement("div");
                 card1.className = "card custom-card";
-  
+
                 const cardBody1 = document.createElement("div");
                 cardBody1.className = "card-body";
-  
+
                 const title1 = document.createElement("h5");
                 title1.className = "card-title";
                 title1.textContent = data1.subject;
-  
+
                 const qualification = document.createElement("p");
                 qualification.className = "card-text";
                 qualification.textContent = `Qualification: ${data1.qualification}`;
-  
+
                 const experience = document.createElement("p");
                 experience.className = "card-text";
                 experience.textContent = `Experience: ${data1.experience}`;
-  
+
+                const status = document.createElement("p");
+                status.className = "card-text";
+                status.textContent = `Status: ${data1.status}`;
+
                 const amount1 = document.createElement("p");
                 amount1.className = "card-text";
                 amount1.textContent = `PKR ${data1.amount}`;
-  
+
                 cardBody1.appendChild(title1);
                 cardBody1.appendChild(qualification);
                 cardBody1.appendChild(experience);
                 cardBody1.appendChild(amount1);
-  
+                cardBody1.appendChild(status);
+
                 card1.appendChild(cardBody1);
                 cardDiv1.appendChild(card1);
-  
+
                 cardContainer1.appendChild(cardDiv1);
               }
               async function fetchDataFromFirestore() {
@@ -209,16 +213,17 @@ onAuthStateChanged(auth, async (user) => {
                   createCard(data);
                 });
                 const proposalsCollection = collection(db, "proposals");
-              const q1 = query(
-                proposalsCollection,
-                orderBy("created_at", "desc"),
-                limit(3)
-              );
-              const querySnapshot1 = await getDocs(q1);
-              querySnapshot1.forEach((doc) => {
-                const data1 = doc.data();
-                createProposalCard(data1);
-              });
+                const q1 = query(
+                  proposalsCollection,
+                  where("student_id", "==", currentUser.uid),
+                  orderBy("created_at", "desc"),
+                  limit(3)
+                );
+                const querySnapshot1 = await getDocs(q1);
+                querySnapshot1.forEach((doc) => {
+                  const data1 = doc.data();
+                  createProposalCard(data1);
+                });
               }
               fetchDataFromFirestore();
             }
@@ -326,6 +331,9 @@ onAuthStateChanged(auth, async (user) => {
             }
           } else if (window.location.href.includes("allproposals.html")) {
             const cardContainer = document.getElementById("cardContainer");
+            const filter = document.getElementById("statusFilter");
+            const optionalOption = document.getElementById("optionalOption");
+            optionalOption.remove();
             const withdrawModal = new bootstrap.Modal(
               document.getElementById("withdrawModal")
             );
@@ -333,7 +341,7 @@ onAuthStateChanged(auth, async (user) => {
               document.getElementById("withdrawModalBody");
             const confirmWithdrawButton =
               document.getElementById("confirmWithdraw");
-              const modalTitle = document.querySelector(".modal-title");
+            const modalTitle = document.querySelector(".modal-title");
             // Function to create a card with data
             function createCard(data, docId) {
               const cardDiv = document.createElement("div");
@@ -359,62 +367,76 @@ onAuthStateChanged(auth, async (user) => {
               experience.textContent = `Experience: ${data.experience}`;
 
               const status = document.createElement("p");
-              status.className = "card-text";
+              status.className = "card-text updateStatus";
               status.textContent = `Status: ${data.status}`;
 
               const amount = document.createElement("p");
               amount.className = "card-text";
               amount.textContent = `PKR ${data.amount}`;
 
-              const accept = document.createElement("a");
-              accept.href = "#";
-              accept.className = "btn btn-primary me-2";
-              accept.textContent = "Accept";
-              accept.style.color = "white";
-              accept.addEventListener("click", () => {
-                // Update modal content
-                withdrawModalBody.innerHTML =
-                  "<p>Are you sure you want to accept the proposal?</p>";
-                // Show the modal
-                confirmWithdrawButton.innerHTML = "Accept";
-                confirmWithdrawButton.className = "btn btn-primary";
-                modalTitle.innerHTML = "Accept proposal";
-                withdrawModal.show();
-                confirmWithdrawButton.addEventListener("click", async () => {
-                  // Perform the withdrawal action here
-                  await updateDocument1(docId);
-                  withdrawModal.hide();
-                });
-              });
-
-              const reject = document.createElement("a");
-              reject.href = "#";
-              reject.className = "btn btn-danger";
-              reject.textContent = "Reject";
-              reject.style.color = "white";
-              reject.addEventListener("click", () => {
-                // Update modal content
-                withdrawModalBody.innerHTML =
-                  "<p>Are you sure you want to reject the proposal?</p>";
-                // Show the modal
-                confirmWithdrawButton.innerHTML = "Reject";
-                confirmWithdrawButton.className = "btn btn-danger";
-                modalTitle.innerHTML = "Reject proposal";
-                withdrawModal.show();
-                // Set up event listener for Confirm Withdraw button in the modal
-                confirmWithdrawButton.addEventListener("click", async () => {
-                  // Perform the withdrawal action here
-                  await updateDocument(docId);
-                  withdrawModal.hide();
-                });
-              });
               cardBody.appendChild(title);
               cardBody.appendChild(qualification);
               cardBody.appendChild(experience);
               cardBody.appendChild(amount);
               cardBody.appendChild(status);
-              cardBody.appendChild(accept);
-              cardBody.appendChild(reject);
+              if (data.status === "pending") {
+                const accept = document.createElement("a");
+                accept.href = "#";
+                accept.className = "btn btn-primary me-2";
+                accept.textContent = "Accept";
+                accept.style.color = "white";
+                accept.addEventListener("click", () => {
+                  // Update modal content
+                  withdrawModalBody.innerHTML =
+                    "<p>Are you sure you want to accept the proposal?</p>";
+                  // Show the modal
+                  confirmWithdrawButton.innerHTML = "Accept";
+                  confirmWithdrawButton.className = "btn btn-primary";
+                  modalTitle.innerHTML = "Accept proposal";
+                  withdrawModal.show();
+                  confirmWithdrawButton.addEventListener("click", async () => {
+                    // Perform the withdrawal action here
+                    addDoc(collection(db, "connections"), {
+                      subject: data.subject,
+                      student_id: currentUser.uid,
+                      teacher_id: data.user_id,
+                      amount: data.amount,
+                      created: serverTimestamp(),
+                    }).catch((error) => {
+                      console.error("Error adding document: ", error);
+                    });
+                    const updateStatus =
+                      document.querySelector(".updateStatus");
+                    status.className = "card-text";
+                    updateStatus.innerHTML = "Status: accepted";
+                    await updateDocument1(docId);
+                    withdrawModal.hide();
+                  });
+                });
+
+                const reject = document.createElement("a");
+                reject.href = "#";
+                reject.className = "btn btn-danger";
+                reject.textContent = "Reject";
+                reject.style.color = "white";
+                reject.addEventListener("click", () => {
+                  // Update modal content
+                  withdrawModalBody.innerHTML =
+                    "<p>Are you sure you want to reject the proposal?</p>";
+                  // Show the modal
+                  confirmWithdrawButton.innerHTML = "Reject";
+                  confirmWithdrawButton.className = "btn btn-danger";
+                  modalTitle.innerHTML = "Reject proposal";
+                  withdrawModal.show();
+                  // Set up event listener for Confirm Withdraw button in the modal
+                  confirmWithdrawButton.addEventListener("click", async () => {
+                    await updateDocument(docId);
+                    withdrawModal.hide();
+                  });
+                });
+                cardBody.appendChild(accept);
+                cardBody.appendChild(reject);
+              }
 
               card.appendChild(cardBody);
               cardDiv.appendChild(card);
@@ -422,45 +444,82 @@ onAuthStateChanged(auth, async (user) => {
               cardContainer.appendChild(cardDiv);
             }
 
+            filter.addEventListener("change", (e) => {
+              e.preventDefault();
+              fetchDataFromFirestore(filter.value);
+            });
+
             async function fetchDataFromFirestore() {
               const proposalsCollection = collection(db, "proposals");
 
-              const q = query(
-                proposalsCollection,
-                where("student_id", "==", currentUser.uid),
-                where("status", "in", ["accepted", "pending"]),
-                orderBy("created_at", "desc")
-              );
+              if (filter.value === "Pending") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("student_id", "==", currentUser.uid),
+                  where("status", "==", "pending"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
 
-              const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else if (filter.value === "Accepted") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("student_id", "==", currentUser.uid),
+                  where("status", "==", "accepted"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
 
-              querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const docId = doc.id;
-                createCard(data, docId);
-              });
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("student_id", "==", currentUser.uid),
+                  where("status", "in", ["pending", "accepted"]),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              }
             }
             fetchDataFromFirestore();
             async function updateDocument(docId) {
               const proposalsCollection = collection(db, "proposals");
               const docRef = doc(proposalsCollection, docId);
-          
+
               await updateDoc(docRef, {
-                  status: "rejected",
+                status: "rejected",
               });
               const cardDiv = document.getElementById(`card-${docId}`);
-                if (cardDiv) {
-                  cardDiv.remove();
-                }
-          }
+              if (cardDiv) {
+                cardDiv.remove();
+              }
+            }
             async function updateDocument1(docId) {
               const proposalsCollection = collection(db, "proposals");
               const docRef = doc(proposalsCollection, docId);
-          
+
               await updateDoc(docRef, {
-                  status: "accepted",
+                status: "accepted",
               });
-          }
+            }
           }
         } else if (userType === "teacher") {
           document.getElementById(
@@ -565,6 +624,7 @@ onAuthStateChanged(auth, async (user) => {
               const proposalsCollection = collection(db, "proposals");
               const q1 = query(
                 proposalsCollection,
+                where("user_id", "==", currentUser.uid),
                 orderBy("created_at", "desc"),
                 limit(3)
               );
@@ -638,7 +698,7 @@ onAuthStateChanged(auth, async (user) => {
                     request_id: docId,
                     user_id: currentUser.uid,
                     student_id: studentId,
-                    status: "Pending",
+                    status: "pending",
                     subject: subject,
                     qualification: qualification,
                     experience: experience,
@@ -681,6 +741,7 @@ onAuthStateChanged(auth, async (user) => {
             fetchDataFromFirestore();
           } else if (window.location.href.includes("allproposals.html")) {
             const cardContainer = document.getElementById("cardContainer");
+            const filter = document.getElementById("statusFilter");
             const withdrawModal = new bootstrap.Modal(
               document.getElementById("withdrawModal")
             );
@@ -720,53 +781,106 @@ onAuthStateChanged(auth, async (user) => {
               status.className = "card-text";
               status.textContent = `Status: ${data.status}`;
 
-              const withdraw = document.createElement("a");
-              withdraw.href = "#";
-              withdraw.className = "btn btn-danger";
-              withdraw.textContent = "Withdraw";
-              withdraw.style.color = "white";
-              withdraw.addEventListener("click", () => {
-                // Update modal content
-                withdrawModalBody.innerHTML =
-                  "<p>Are you sure you want to withdraw the proposal?</p>";
-                // Show the modal
-                withdrawModal.show();
-                // Set up event listener for Confirm Withdraw button in the modal
-                confirmWithdrawButton.addEventListener("click", async () => {
-                  // Perform the withdrawal action here
-                  await deleteDocument(docId);
-                  withdrawModal.hide();
-                });
-              });
               cardBody.appendChild(title);
               cardBody.appendChild(qualification);
               cardBody.appendChild(experience);
               cardBody.appendChild(amount);
               cardBody.appendChild(status);
-              cardBody.appendChild(withdraw);
+              if (data.status === "pending") {
+                const withdraw = document.createElement("a");
+                withdraw.href = "#";
+                withdraw.className = "btn btn-danger";
+                withdraw.textContent = "Withdraw";
+                withdraw.style.color = "white";
+                withdraw.addEventListener("click", () => {
+                  // Update modal content
+                  withdrawModalBody.innerHTML =
+                    "<p>Are you sure you want to withdraw the proposal?</p>";
+                  // Show the modal
+                  withdrawModal.show();
+                  // Set up event listener for Confirm Withdraw button in the modal
+                  confirmWithdrawButton.addEventListener("click", async () => {
+                    // Perform the withdrawal action here
+                    await deleteDocument(docId);
+                    withdrawModal.hide();
+                  });
+                });
+                cardBody.appendChild(withdraw);
+              }
 
               card.appendChild(cardBody);
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
             }
+            filter.addEventListener("change", (e) => {
+              e.preventDefault();
+              fetchDataFromFirestore(filter.value);
+            });
 
             async function fetchDataFromFirestore() {
               const proposalsCollection = collection(db, "proposals");
 
-              const q = query(
-                proposalsCollection,
-                where("user_id", "==", currentUser.uid),
-                orderBy("created_at", "desc")
-              );
+              if (filter.value === "Pending") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("user_id", "==", currentUser.uid),
+                  where("status", "==", "pending"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
 
-              const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else if (filter.value === "Accepted") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("user_id", "==", currentUser.uid),
+                  where("status", "==", "accepted"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
 
-              querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const docId = doc.id;
-                createCard(data, docId);
-              });
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else if (filter.value === "Rejected") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("user_id", "==", currentUser.uid),
+                  where("status", "==", "rejected"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("user_id", "==", currentUser.uid),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              }
             }
             fetchDataFromFirestore();
             async function deleteDocument(docId) {
