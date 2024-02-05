@@ -47,10 +47,389 @@ onAuthStateChanged(auth, async (user) => {
 
         if (userType === "admin") {
           document.getElementById("usernamePlaceholder").innerHTML = username;
+          document.getElementById("requestTeacherLink").remove();
+          
+          if (window.location.href.includes("dashboard.html")) {
+            const cardContainer = document.getElementById("cardContainer");
+            const cardContainer1 = document.getElementById("cardContainer1");
+            const cardContainer2 = document.getElementById("cardContainer2");
+
+            // Function to create a card with data
+            function createCard(data) {
+              const cardDiv = document.createElement("div");
+              cardDiv.className = "col-md-4 mb-4";
+
+              const card = document.createElement("div");
+              card.className = "card custom-card";
+
+              const cardBody = document.createElement("div");
+              cardBody.className = "card-body";
+
+              const title = document.createElement("h5");
+              title.className = "card-title";
+              title.textContent = data.subject;
+
+              const description = document.createElement("p");
+              description.className = "card-text";
+              description.textContent = `Description: ${data.description}`;
+
+              const time = document.createElement("p");
+              time.className = "card-text";
+              time.textContent = `Time slot: ${data.timeFrom} - ${data.timeTo}`;
+
+              const amount = document.createElement("p");
+              amount.className = "card-text";
+              amount.textContent = `PKR ${data.amount}`;
+
+              cardBody.appendChild(title);
+              cardBody.appendChild(description);
+              cardBody.appendChild(time);
+              cardBody.appendChild(amount);
+
+              card.appendChild(cardBody);
+              cardDiv.appendChild(card);
+
+              cardContainer.appendChild(cardDiv);
+            }
+
+            function createProposalCard(data1) {
+              const cardDiv1 = document.createElement("div");
+              cardDiv1.className = "col-md-4 mb-4";
+
+              const card1 = document.createElement("div");
+              card1.className = "card custom-card";
+
+              const cardBody1 = document.createElement("div");
+              cardBody1.className = "card-body";
+
+              const title1 = document.createElement("h5");
+              title1.className = "card-title";
+              title1.textContent = data1.subject;
+
+              const qualification = document.createElement("p");
+              qualification.className = "card-text";
+              qualification.textContent = `Qualification: ${data1.qualification}`;
+
+              const experience = document.createElement("p");
+              experience.className = "card-text";
+              experience.textContent = `Experience: ${data1.experience}`;
+
+              const status = document.createElement("p");
+              status.className = "card-text";
+              status.textContent = `Status: ${data1.status}`;
+
+              const amount1 = document.createElement("p");
+              amount1.className = "card-text";
+              amount1.textContent = `PKR ${data1.amount}`;
+
+              cardBody1.appendChild(title1);
+              cardBody1.appendChild(qualification);
+              cardBody1.appendChild(experience);
+              cardBody1.appendChild(amount1);
+              cardBody1.appendChild(status);
+
+              card1.appendChild(cardBody1);
+              cardDiv1.appendChild(card1);
+
+              cardContainer1.appendChild(cardDiv1);
+            }
+            function createConnectionCard(data2) {
+              const cardDiv2 = document.createElement("div");
+              cardDiv2.className = "col-md-4 mb-4";
+
+              const card2 = document.createElement("div");
+              card2.className = "card custom-card";
+
+              const cardBody2 = document.createElement("div");
+              cardBody2.className = "card-body";
+
+              const title2 = document.createElement("h5");
+              title2.className = "card-title";
+              title2.textContent = data2.subject;
+
+              const teacher = document.createElement("p");
+              teacher.className = "card-title";
+              teacher.textContent = `Teacher: ${data2.teacher_name}`;
+
+              const student = document.createElement("p");
+              student.className = "card-title";
+              student.textContent = `Student: ${data2.student_name}`;
+
+              const amount2 = document.createElement("p");
+              amount2.className = "card-text";
+              amount2.textContent = `PKR ${data2.amount}`;
+
+              cardBody2.appendChild(title2);
+              cardBody2.appendChild(teacher);
+              cardBody2.appendChild(student);
+              cardBody2.appendChild(amount2);
+
+              card2.appendChild(cardBody2);
+              cardDiv2.appendChild(card2);
+
+              cardContainer2.appendChild(cardDiv2);
+            }
+            async function fetchDataFromFirestore() {
+              const requestsCollection = collection(db, "requests");
+
+              const q = query(
+                requestsCollection,
+                orderBy("created", "desc"),
+                limit(3)
+              );
+
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                createCard(data);
+              });
+              const proposalsCollection = collection(db, "proposals");
+              const q1 = query(
+                proposalsCollection,
+                orderBy("created_at", "desc"),
+                limit(3)
+              );
+              const querySnapshot1 = await getDocs(q1);
+              querySnapshot1.forEach((doc) => {
+                const data1 = doc.data();
+                createProposalCard(data1);
+              });
+              const connections = collection(db, "connections");
+              const q2 = query(
+                connections,
+                orderBy("created", "desc"),
+                limit(3)
+              );
+              const querySnapshot2 = await getDocs(q2);
+              querySnapshot2.forEach((doc) => {
+                const data2 = doc.data();
+                createConnectionCard(data2);
+              });
+            }
+            fetchDataFromFirestore();
+          } else if (window.location.href.includes("allrequests.html")) {
+            const cardContainer = document.getElementById("cardContainer");
+            document.querySelector(".add-more").remove();
+            // Function to create a card with data
+            function createCard(data, docId) {
+              const cardDiv = document.createElement("div");
+              cardDiv.id = `card-${docId}`;
+              cardDiv.className = "col-md-4 mb-4";
+
+              const card = document.createElement("div");
+              card.className = "card custom-card";
+
+              const cardBody = document.createElement("div");
+              cardBody.className = "card-body";
+
+              const title = document.createElement("h5");
+              title.className = "card-title";
+              title.textContent = data.subject;
+
+              const description = document.createElement("p");
+              description.className = "card-text";
+              description.textContent = `Description: ${data.description}`;
+
+              const time = document.createElement("p");
+              time.className = "card-text";
+              time.textContent = `Time slot: ${data.timeFrom} - ${data.timeTo}`;
+
+              const amount = document.createElement("p");
+              amount.className = "card-text";
+              amount.textContent = `PKR ${data.amount}`;
+
+              cardBody.appendChild(title);
+              cardBody.appendChild(description);
+              cardBody.appendChild(time);
+              cardBody.appendChild(amount);
+
+              card.appendChild(cardBody);
+              cardDiv.appendChild(card);
+
+              cardContainer.appendChild(cardDiv);
+            }
+
+            async function fetchDataFromFirestore() {
+              const requestsCollection = collection(db, "requests");
+
+              const q = query(
+                requestsCollection,
+                orderBy("created", "desc")
+              );
+
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const docId = doc.id;
+                createCard(data, docId);
+              });
+            }
+            fetchDataFromFirestore();
+          } else if (window.location.href.includes("allproposals.html")) {
+            const cardContainer = document.getElementById("cardContainer");
+            const filter = document.getElementById("statusFilter");
+            // Function to create a card with data
+            function createCard(data, docId) {
+              const cardDiv = document.createElement("div");
+              cardDiv.id = `card-${docId}`;
+              cardDiv.className = "col-md-4 mb-4";
+
+              const card = document.createElement("div");
+              card.className = "card custom-card";
+
+              const cardBody = document.createElement("div");
+              cardBody.className = "card-body";
+
+              const title = document.createElement("h5");
+              title.className = "card-title";
+              title.textContent = data.subject;
+
+              const qualification = document.createElement("p");
+              qualification.className = "card-text";
+              qualification.textContent = `Qualification: ${data.qualification}`;
+
+              const experience = document.createElement("p");
+              experience.className = "card-text";
+              experience.textContent = `Experience: ${data.experience}`;
+
+              const status = document.createElement("p");
+              status.className = "card-text updateStatus";
+              status.textContent = `Status: ${data.status}`;
+
+              const amount = document.createElement("p");
+              amount.className = "card-text";
+              amount.textContent = `PKR ${data.amount}`;
+
+              cardBody.appendChild(title);
+              cardBody.appendChild(qualification);
+              cardBody.appendChild(experience);
+              cardBody.appendChild(amount);
+              cardBody.appendChild(status);
+              card.appendChild(cardBody);
+              cardDiv.appendChild(card);
+              cardContainer.appendChild(cardDiv);
+            }
+
+            filter.addEventListener("change", (e) => {
+              e.preventDefault();
+              fetchDataFromFirestore(filter.value);
+            });
+
+            async function fetchDataFromFirestore() {
+              const proposalsCollection = collection(db, "proposals");
+
+              if (filter.value === "Pending") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("status", "==", "pending"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else if (filter.value === "Accepted") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("status", "==", "accepted"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else if (filter.value === "Rejected") {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  where("status", "==", "rejected"),
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              } else {
+                cardContainer.innerHTML = "";
+                const q = query(
+                  proposalsCollection,
+                  orderBy("created_at", "desc")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const docId = doc.id;
+                  createCard(data, docId);
+                });
+              }
+            }
+            fetchDataFromFirestore();
+          } else if (window.location.href.includes("connections.html")) {
+            const cardContainer = document.getElementById("cardContainer");
+            // Function to create a card with data
+            function createCard(data) {
+              const cardDiv = document.createElement("div");
+              cardDiv.className = "col-md-4 mb-4";
+
+              const card = document.createElement("div");
+              card.className = "card custom-card";
+
+              const cardBody = document.createElement("div");
+              cardBody.className = "card-body";
+
+              const title = document.createElement("h5");
+              title.className = "card-title";
+              title.textContent = data.subject;
+
+              const amount = document.createElement("p");
+              amount.className = "card-text";
+              amount.textContent = `PKR ${data.amount}`;
+
+              cardBody.appendChild(title);
+              cardBody.appendChild(amount);
+
+              card.appendChild(cardBody);
+              cardDiv.appendChild(card);
+
+              cardContainer.appendChild(cardDiv);
+            }
+
+            async function fetchDataFromFirestore() {
+              const connections = collection(db, "connections");
+
+              const q = query(
+                connections,
+                orderBy("created", "desc")
+              );
+
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                createCard(data);
+              });
+            }
+            fetchDataFromFirestore();
+          }
         } else if (userType === "student") {
           document.getElementById(
             "usernamePlaceholder"
           ).innerHTML = `Student: ${username}`;
+          document.getElementById("allConnectionsLink").remove();
 
           if (
             window.location.href.includes("dashboard.html") ||
@@ -95,6 +474,7 @@ onAuthStateChanged(auth, async (user) => {
                 addDoc(collection(db, "requests"), {
                   subject: subject,
                   user_id: currentUser.uid,
+                  username: username,
                   description: description,
                   amount: amount,
                   timeFrom: formattedTimeFrom,
@@ -227,8 +607,7 @@ onAuthStateChanged(auth, async (user) => {
               }
               fetchDataFromFirestore();
             }
-
-            // Call the function to fetch data and populate cards
+            
           } else if (window.location.href.includes("allrequests.html")) {
             const cardContainer = document.getElementById("cardContainer");
             const withdrawModal = new bootstrap.Modal(
@@ -400,6 +779,8 @@ onAuthStateChanged(auth, async (user) => {
                       subject: data.subject,
                       student_id: currentUser.uid,
                       teacher_id: data.user_id,
+                      teacher_name: data.teacher_name,
+                      student_name: data.student_name,
                       amount: data.amount,
                       created: serverTimestamp(),
                     }).catch((error) => {
@@ -525,6 +906,7 @@ onAuthStateChanged(auth, async (user) => {
           document.getElementById(
             "usernamePlaceholder"
           ).innerHTML = `Teacher: ${username}`;
+          document.getElementById("allConnectionsLink").remove();
           document.getElementById("requestTeacherLink").remove();
 
           if (window.location.href.includes("dashboard.html")) {
@@ -643,7 +1025,7 @@ onAuthStateChanged(auth, async (user) => {
               document.getElementById("exampleModal")
             );
             // Function to create a card with data
-            function createCard(data, docId, studentId, subject) {
+            function createCard(data, docId, studentId, subject, studentName) {
               const cardDiv = document.createElement("div");
               cardDiv.className = "col-md-4 mb-4";
               cardDiv.id = `${docId}`;
@@ -697,6 +1079,8 @@ onAuthStateChanged(auth, async (user) => {
                   await addDoc(proposal, {
                     request_id: docId,
                     user_id: currentUser.uid,
+                    teacher_name: username,
+                    student_name: studentName,
                     student_id: studentId,
                     status: "pending",
                     subject: subject,
@@ -734,7 +1118,8 @@ onAuthStateChanged(auth, async (user) => {
                 const docId = doc.id;
                 const studentId = data.user_id;
                 const subject = data.subject;
-                createCard(data, docId, studentId, subject);
+                const studentName = data.username;
+                createCard(data, docId, studentId, subject, studentName);
               });
             }
 

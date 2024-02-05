@@ -63,7 +63,7 @@
         <div class="row">
             <!-- Sidebar -->
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky sidebar-cont">
+                <div class="sidebar-sticky sidebar-cont" style="height: 100vh;">
                     <ul class="nav flex-column">
                     <div class="tab"> 
                         <li class="nav-item">
@@ -90,6 +90,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="request.html">
                                 Request teacher
+                            </a>
+                        </li>
+                    </div>
+                    <div class="tab" id="allConnectionsLink"> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="connections.html">
+                                All connections
                             </a>
                         </li>
                     </div>
@@ -125,10 +132,26 @@
                                 align-items: center;">
                                 <h5 class="card-title">Recent Proposals</h5>
                                 <span><a href="allproposals.html">See all</a></span>
-                            </div>
+                        </div>
 
                                 <!-- Horizontal scroll container -->
                                 <div class="row flex-nowrap overflow-auto" id="cardContainer1">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-5 connectionCards">
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="display: flex;
+                                justify-content: space-between;
+                                align-items: center;">
+                                <h5 class="card-title">Recent Connections</h5>
+                                <span><a href="connections.html">See all</a></span>
+                        </div>
+
+                                <div class="row flex-nowrap overflow-auto" id="cardContainer2">
 
                                 </div>
                             </div>
