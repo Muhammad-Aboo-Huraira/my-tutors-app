@@ -1,65 +1,63 @@
 .form-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; 
-    margin: 0; 
-    user-select: none;
-  }
-  .form-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    user-select: none;
-  }
-  
-  .log-sig {
-    border-radius: 25px;
-    border: 3px solid #f1f1f1;
-    max-width: 400px;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .password-container {
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  user-select: none;
 }
-  #togglePassword {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
-  #togglePassword,
-  #password {
-    right: 2%;
-  }
-  .container a:hover {
-    color: #45a049;
-  }
-  .container a {
-    color: #04aa6d;
-    text-decoration: none;
-  }
-    .tab {
-      padding: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .tab:hover {
-      background-color: #636363;
-    }
-    
-    .tab a {
-      color: black;
-    }
-    
-    .tab:hover a {
-      color: white;
-    }
-    
-    
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  user-select: none;
+}
+
+.log-sig {
+  border-radius: 25px;
+  border: 3px solid #f1f1f1;
+  max-width: 400px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.password-container {
+  position: relative;
+}
+#togglePassword {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+#togglePassword,
+#password {
+  right: 2%;
+}
+.container a:hover {
+  color: #45a049;
+}
+.container a {
+  color: #04aa6d;
+  text-decoration: none;
+}
+.tab {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #636363;
+}
+
+.tab a {
+  color: black;
+}
+
+.tab:hover a {
+  color: white;
+}

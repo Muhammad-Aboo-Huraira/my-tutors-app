@@ -48,7 +48,7 @@ onAuthStateChanged(auth, async (user) => {
         if (userType === "admin") {
           document.getElementById("usernamePlaceholder").innerHTML = username;
           document.getElementById("requestTeacherLink").remove();
-          
+
           if (window.location.href.includes("dashboard.html")) {
             const cardContainer = document.getElementById("cardContainer");
             const cardContainer1 = document.getElementById("cardContainer1");
@@ -253,10 +253,7 @@ onAuthStateChanged(auth, async (user) => {
             async function fetchDataFromFirestore() {
               const requestsCollection = collection(db, "requests");
 
-              const q = query(
-                requestsCollection,
-                orderBy("created", "desc")
-              );
+              const q = query(requestsCollection, orderBy("created", "desc"));
 
               const querySnapshot = await getDocs(q);
 
@@ -411,10 +408,7 @@ onAuthStateChanged(auth, async (user) => {
             async function fetchDataFromFirestore() {
               const connections = collection(db, "connections");
 
-              const q = query(
-                connections,
-                orderBy("created", "desc")
-              );
+              const q = query(connections, orderBy("created", "desc"));
 
               const querySnapshot = await getDocs(q);
 
@@ -429,7 +423,6 @@ onAuthStateChanged(auth, async (user) => {
           document.getElementById(
             "usernamePlaceholder"
           ).innerHTML = `Student: ${username}`;
-          document.getElementById("allConnectionsLink").remove();
 
           if (
             window.location.href.includes("dashboard.html") ||
@@ -496,6 +489,7 @@ onAuthStateChanged(auth, async (user) => {
             if (window.location.href.includes("dashboard.html")) {
               const cardContainer = document.getElementById("cardContainer");
               const cardContainer1 = document.getElementById("cardContainer1");
+              const cardContainer2 = document.getElementById("cardContainer2");
 
               // Function to create a card with data
               function createCard(data) {
@@ -576,6 +570,37 @@ onAuthStateChanged(auth, async (user) => {
 
                 cardContainer1.appendChild(cardDiv1);
               }
+              function createConnectionCard(data2) {
+                const cardDiv2 = document.createElement("div");
+                cardDiv2.className = "col-md-4 mb-4";
+
+                const card2 = document.createElement("div");
+                card2.className = "card custom-card";
+
+                const cardBody2 = document.createElement("div");
+                cardBody2.className = "card-body";
+
+                const title2 = document.createElement("h5");
+                title2.className = "card-title";
+                title2.textContent = data2.subject;
+
+                const teacher = document.createElement("p");
+                teacher.className = "card-title";
+                teacher.textContent = `Teacher: ${data2.teacher_name}`;
+
+                const amount2 = document.createElement("p");
+                amount2.className = "card-text";
+                amount2.textContent = `PKR ${data2.amount}`;
+
+                cardBody2.appendChild(title2);
+                cardBody2.appendChild(teacher);
+                cardBody2.appendChild(amount2);
+
+                card2.appendChild(cardBody2);
+                cardDiv2.appendChild(card2);
+
+                cardContainer2.appendChild(cardDiv2);
+              }
               async function fetchDataFromFirestore() {
                 const requestsCollection = collection(db, "requests");
 
@@ -604,10 +629,21 @@ onAuthStateChanged(auth, async (user) => {
                   const data1 = doc.data();
                   createProposalCard(data1);
                 });
+                const connections = collection(db, "connections");
+                const q2 = query(
+                  connections,
+                  where("student_id", "==", currentUser.uid),
+                  orderBy("created", "desc"),
+                  limit(3)
+                );
+                const querySnapshot2 = await getDocs(q2);
+                querySnapshot2.forEach((doc) => {
+                  const data2 = doc.data();
+                  createConnectionCard(data2);
+                });
               }
               fetchDataFromFirestore();
             }
-            
           } else if (window.location.href.includes("allrequests.html")) {
             const cardContainer = document.getElementById("cardContainer");
             const withdrawModal = new bootstrap.Modal(
@@ -747,7 +783,9 @@ onAuthStateChanged(auth, async (user) => {
 
               const status = document.createElement("p");
               status.className = "card-text updateStatus";
-              status.textContent = `Status: ${data.status}`;
+              status.innerHTML = `Status: <span style="color: ${
+                data.status == "pending" ? "orange" : "green"
+              }">${data.status}</span>`;
 
               const amount = document.createElement("p");
               amount.className = "card-text";
@@ -779,6 +817,7 @@ onAuthStateChanged(auth, async (user) => {
                       subject: data.subject,
                       student_id: currentUser.uid,
                       teacher_id: data.user_id,
+                      payment: "pending",
                       teacher_name: data.teacher_name,
                       student_name: data.student_name,
                       amount: data.amount,
@@ -789,8 +828,8 @@ onAuthStateChanged(auth, async (user) => {
                     const updateStatus =
                       document.querySelector(".updateStatus");
                     status.className = "card-text";
-                    updateStatus.innerHTML = "Status: accepted";
                     await updateDocument1(docId);
+                    updateStatus.innerHTML = `Status: <span style="color: green">accepted</span>`;
                     withdrawModal.hide();
                   });
                 });
@@ -901,17 +940,69 @@ onAuthStateChanged(auth, async (user) => {
                 status: "accepted",
               });
             }
+          } else if (window.location.href.includes("connections.html")) {
+            const cardContainer = document.getElementById("cardContainer");
+            // Function to create a card with data
+            function createCard(data) {
+              const cardDiv = document.createElement("div");
+              cardDiv.className = "col-md-4 mb-4";
+
+              const card = document.createElement("div");
+              card.className = "card custom-card";
+
+              const cardBody = document.createElement("div");
+              cardBody.className = "card-body";
+
+              const title = document.createElement("h5");
+              title.className = "card-title";
+              title.textContent = data.subject;
+              
+              const teacher = document.createElement("p");
+              teacher.className = "card-title";
+              teacher.textContent = `Teacher: ${data.teacher_name}`;
+
+              const amount = document.createElement("p");
+              amount.className = "card-text";
+              amount.textContent = `PKR ${data.amount}`;
+
+              cardBody.appendChild(title);
+              cardBody.appendChild(teacher);
+              cardBody.appendChild(amount);
+
+              card.appendChild(cardBody);
+              cardDiv.appendChild(card);
+
+              cardContainer.appendChild(cardDiv);
+            }
+
+            async function fetchDataFromFirestore() {
+              const connections = collection(db, "connections");
+
+              const q = query(
+                connections,
+                where("student_id", "==", currentUser.uid),
+                orderBy("created", "desc")
+              );
+
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                createCard(data);
+              });
+            }
+            fetchDataFromFirestore();
           }
         } else if (userType === "teacher") {
           document.getElementById(
             "usernamePlaceholder"
           ).innerHTML = `Teacher: ${username}`;
-          document.getElementById("allConnectionsLink").remove();
           document.getElementById("requestTeacherLink").remove();
 
           if (window.location.href.includes("dashboard.html")) {
             const cardContainer = document.getElementById("cardContainer");
             const cardContainer1 = document.getElementById("cardContainer1");
+            const cardContainer2 = document.getElementById("cardContainer2");
 
             // Function to create a card with data
             function createCard(data) {
@@ -987,6 +1078,44 @@ onAuthStateChanged(auth, async (user) => {
 
               cardContainer1.appendChild(cardDiv1);
             }
+            function createConnectionCard(data2) {
+              const cardDiv2 = document.createElement("div");
+              cardDiv2.className = "col-md-4 mb-4";
+
+              const card2 = document.createElement("div");
+              card2.className = "card custom-card";
+
+              const cardBody2 = document.createElement("div");
+              cardBody2.className = "card-body";
+
+              const title2 = document.createElement("h5");
+              title2.className = "card-title";
+              title2.textContent = data2.subject;
+
+              const student = document.createElement("p");
+              student.className = "card-title";
+              student.textContent = `Student: ${data2.student_name}`;
+
+              const payment = document.createElement("p");
+              payment.className = "card-text";
+              payment.innerHTML = `Payment: <span style="color: ${
+                data2.payment == "pending" ? "orange" : "green"
+              }">${data2.payment}</span>`;
+
+              const amount2 = document.createElement("p");
+              amount2.className = "card-text";
+              amount2.textContent = `PKR ${data2.amount}`;
+
+              cardBody2.appendChild(title2);
+              cardBody2.appendChild(student);
+              cardBody2.appendChild(payment);
+              cardBody2.appendChild(amount2);
+
+              card2.appendChild(cardBody2);
+              cardDiv2.appendChild(card2);
+
+              cardContainer2.appendChild(cardDiv2);
+            }
 
             async function fetchDataFromFirestore() {
               const requestsCollection = collection(db, "requests");
@@ -1014,6 +1143,18 @@ onAuthStateChanged(auth, async (user) => {
               querySnapshot1.forEach((doc) => {
                 const data1 = doc.data();
                 createProposalCard(data1);
+              });
+              const connections = collection(db, "connections");
+              const q2 = query(
+                connections,
+                where("teacher_id", "==", currentUser.uid),
+                orderBy("created", "desc"),
+                limit(3)
+              );
+              const querySnapshot2 = await getDocs(q2);
+              querySnapshot2.forEach((doc) => {
+                const data2 = doc.data();
+                createConnectionCard(data2);
               });
             }
 
@@ -1163,8 +1304,10 @@ onAuthStateChanged(auth, async (user) => {
               amount.textContent = `PKR ${data.amount}`;
 
               const status = document.createElement("p");
-              status.className = "card-text";
-              status.textContent = `Status: ${data.status}`;
+              status.innerHTML = `Status: <span style="color: ${
+                data.status == "pending" ? "orange" : 
+                (data.status == "accepted" ? "green" : "red")
+              }">${data.status}</span>`;
 
               cardBody.appendChild(title);
               cardBody.appendChild(qualification);
@@ -1282,6 +1425,114 @@ onAuthStateChanged(auth, async (user) => {
               } catch (error) {
                 console.error("Error deleting document: ", error);
               }
+            }
+          } else if (window.location.href.includes("connections.html")) {
+            const cardContainer = document.getElementById("cardContainer");
+            const withdrawModal = new bootstrap.Modal(
+              document.getElementById("withdrawModal")
+            );
+            const withdrawModalBody =
+              document.getElementById("withdrawModalBody");
+            const confirmWithdrawButton =
+              document.getElementById("confirmWithdraw");
+            const modalTitle = document.querySelector(".modal-title");
+            // Function to create a card with data
+            function createCard(data, docId) {
+              const cardDiv = document.createElement("div");
+              cardDiv.className = "col-md-4 mb-4";
+
+              const card = document.createElement("div");
+              card.className = "card custom-card";
+
+              const cardBody = document.createElement("div");
+              cardBody.className = "card-body";
+
+              const title = document.createElement("h5");
+              title.className = "card-title";
+              title.textContent = data.subject;
+
+              const student = document.createElement("p");
+              student.className = "card-title";
+              student.textContent = `Student: ${data.student_name}`;
+
+              const payment = document.createElement("p");
+              payment.className = "card-text";
+              payment.innerHTML = `Payment: <span style="color: ${
+                data.payment == "pending" ? "orange" : "green"
+              }">${data.payment}</span>`;
+
+
+
+              const payAmount = document.createElement("p");
+              payAmount.className = "card-text";
+              payAmount.textContent = `Pay 10%:  PKR ${((data.amount/100)*10).toFixed(0)}`;
+
+              const amount = document.createElement("p");
+              amount.className = "card-text";
+              amount.textContent = `PKR ${data.amount}`;
+
+              cardBody.appendChild(title);
+              cardBody.appendChild(student);
+              cardBody.appendChild(payment);
+              cardBody.appendChild(amount);
+              cardBody.appendChild(payAmount);
+              if (data.payment == "pending") {
+                const pay = document.createElement("a");
+                pay.className = "btn btn-primary me-2";
+                pay.textContent = "Pay";
+                pay.style.color = "white";
+                pay.addEventListener("click", () => {
+                  // Update modal content
+                  withdrawModalBody.innerHTML =
+                    "<p>Are you sure you want to pay the amount?</p>";
+                  // Show the modal
+                  confirmWithdrawButton.innerHTML = "Pay";
+                  confirmWithdrawButton.className = "btn btn-primary";
+                  modalTitle.innerHTML = "Payment confirmation";
+                  withdrawModal.show();
+                  // Set up event listener for Confirm Withdraw button in the modal
+                  confirmWithdrawButton.addEventListener("click", async () => {
+                    await updateDocument(docId);
+                    payment.innerHTML = `Payment: <span style="color: green">paid</span>`;
+                    pay.remove();
+                    withdrawModal.hide();
+                  });
+                });
+                
+                cardBody.appendChild(pay);
+              }
+
+              card.appendChild(cardBody);
+              cardDiv.appendChild(card);
+
+              cardContainer.appendChild(cardDiv);
+            }
+
+            async function fetchDataFromFirestore() {
+              const connections = collection(db, "connections");
+
+              const q = query(
+                connections,
+                where("teacher_id", "==", currentUser.uid),
+                orderBy("created", "desc")
+              );
+
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const docId = doc.id;
+                createCard(data, docId);
+              });
+            }
+            fetchDataFromFirestore();
+            async function updateDocument(docId) {
+              const connectionsCollection = collection(db, "connections");
+              const docRef = doc(connectionsCollection, docId);
+
+              await updateDoc(docRef, {
+                payment: "paid",
+              });
             }
           }
         }
