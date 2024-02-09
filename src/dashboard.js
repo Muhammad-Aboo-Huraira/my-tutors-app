@@ -23,6 +23,21 @@ import {
 
 const auth = getAuth(firebaseapp);
 const db = getFirestore(firebaseapp);
+// Show loader when content is loading
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.getElementById("loader").style.display = "block";
+// });
+
+// // Hide loader when content has finished loading
+// window.addEventListener("load", function() {
+//     document.getElementById("loader").style.display = "none";
+// });
+setTimeout(() => {
+  const screenSpinnerContainer = document.getElementById("screen-spinner-container");
+  // Hide the spinner by setting its display property to "none"
+  screenSpinnerContainer.style.display = "none";
+}, 5000);
+
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -44,7 +59,6 @@ onAuthStateChanged(auth, async (user) => {
         const loaderText = document.createElement("span");
         loaderText.className = "visually-hidden";
         loader.appendChild(loaderText);
-
         if (userType === "admin") {
           document.getElementById("usernamePlaceholder").innerHTML = username;
           document.getElementById("requestTeacherLink").remove();
@@ -66,12 +80,28 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const description = document.createElement("p");
               description.className = "card-text";
-              description.textContent = `Description: ${data.description}`;
+              // Create a span element for the description text
+              const descriptionText = document.createElement("p");
+              descriptionText.textContent = `Description: ${data.description}`;
+              // Add tooltip attributes
+              descriptionText.setAttribute("data-toggle", "tooltip");
+              descriptionText.setAttribute("title", data.description);
+              // Initialize tooltip
+              descriptionText.className = "d-inline-block text-truncate";
+              descriptionText.style = "max-width: 250px;";
+
+              $(descriptionText).tooltip();
+
+              description.appendChild(descriptionText);
 
               const time = document.createElement("p");
               time.className = "card-text";
@@ -94,7 +124,7 @@ onAuthStateChanged(auth, async (user) => {
 
             function createProposalCard(data1) {
               const cardDiv1 = document.createElement("div");
-              cardDiv1.className = "col-md-4 mb-4";
+              cardDiv1.className = "col-md-4 mb-4 text-center";
 
               const card1 = document.createElement("div");
               card1.className = "card custom-card";
@@ -103,20 +133,55 @@ onAuthStateChanged(auth, async (user) => {
               cardBody1.className = "card-body";
 
               const title1 = document.createElement("h5");
-              title1.className = "card-title";
+              title1.className = "card-title d-inline-block text-truncate";
               title1.textContent = data1.subject;
+              title1.setAttribute("data-toggle", "tooltip");
+              title1.setAttribute("title", data1.subject);
+              title1.style = "max-width: 250px;";
+              $(title1).tooltip();
 
               const qualification = document.createElement("p");
               qualification.className = "card-text";
-              qualification.textContent = `Qualification: ${data1.qualification}`;
+              // Create a span element for the qualification text
+              const qualificationText = document.createElement("span");
+              qualificationText.textContent = `Qualification: ${data1.qualification}`;
+              // Add tooltip attributes
+              qualificationText.setAttribute("data-toggle", "tooltip");
+              qualificationText.setAttribute("title", data1.qualification);
+              // Apply text-truncate class and max-width style
+              qualificationText.className = "d-inline-block text-truncate";
+              qualificationText.style = "max-width: 250px;";
+
+              $(qualificationText).tooltip();
+
+              // Append the qualificationText span to the qualification paragraph
+              qualification.appendChild(qualificationText);
 
               const experience = document.createElement("p");
               experience.className = "card-text";
-              experience.textContent = `Experience: ${data1.experience}`;
+              // Create a span element for the experience text
+              const experienceText = document.createElement("span");
+              experienceText.textContent = `Experience: ${data1.experience}`;
+              // Add tooltip attributes
+              experienceText.setAttribute("data-toggle", "tooltip");
+              experienceText.setAttribute("title", data1.experience);
+              // Apply text-truncate class and max-width style
+              experienceText.className = "d-inline-block text-truncate";
+              experienceText.style = "max-width: 250px;";
+
+              $(experienceText).tooltip();
+
+              // Append the experienceText span to the experience paragraph
+              experience.appendChild(experienceText);
 
               const status = document.createElement("p");
-              status.className = "card-text";
-              status.textContent = `Status: ${data1.status}`;
+              status.innerHTML = `Status: <span style="color: ${
+                data1.status == "pending"
+                  ? "orange"
+                  : data1.status == "accepted"
+                  ? "green"
+                  : "red"
+              }">${data1.status}</span>`;
 
               const amount1 = document.createElement("p");
               amount1.className = "card-text";
@@ -144,8 +209,12 @@ onAuthStateChanged(auth, async (user) => {
               cardBody2.className = "card-body";
 
               const title2 = document.createElement("h5");
-              title2.className = "card-title";
+              title2.className = "card-title d-inline-block text-truncate";
               title2.textContent = data2.subject;
+              title2.setAttribute("data-toggle", "tooltip");
+              title2.setAttribute("title", data2.subject);
+              title2.style = "max-width: 250px;";
+              $(title2).tooltip();
 
               const teacher = document.createElement("p");
               teacher.className = "card-title";
@@ -224,12 +293,28 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const description = document.createElement("p");
               description.className = "card-text";
-              description.textContent = `Description: ${data.description}`;
+              // Create a span element for the description text
+              const descriptionText = document.createElement("p");
+              descriptionText.textContent = `Description: ${data.description}`;
+              // Add tooltip attributes
+              descriptionText.setAttribute("data-toggle", "tooltip");
+              descriptionText.setAttribute("title", data.description);
+              // Initialize tooltip
+              descriptionText.className = "d-inline-block text-truncate";
+              descriptionText.style = "max-width: 250px;";
+
+              $(descriptionText).tooltip();
+
+              description.appendChild(descriptionText);
 
               const time = document.createElement("p");
               time.className = "card-text";
@@ -271,7 +356,7 @@ onAuthStateChanged(auth, async (user) => {
             function createCard(data, docId) {
               const cardDiv = document.createElement("div");
               cardDiv.id = `card-${docId}`;
-              cardDiv.className = "col-md-4 mb-4";
+              cardDiv.className = "col-md-4 mb-4 text-center";
 
               const card = document.createElement("div");
               card.className = "card custom-card";
@@ -280,20 +365,55 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const qualification = document.createElement("p");
               qualification.className = "card-text";
-              qualification.textContent = `Qualification: ${data.qualification}`;
+              // Create a span element for the qualification text
+              const qualificationText = document.createElement("span");
+              qualificationText.textContent = `Qualification: ${data.qualification}`;
+              // Add tooltip attributes
+              qualificationText.setAttribute("data-toggle", "tooltip");
+              qualificationText.setAttribute("title", data.qualification);
+              // Apply text-truncate class and max-width style
+              qualificationText.className = "d-inline-block text-truncate";
+              qualificationText.style = "max-width: 250px;";
+
+              $(qualificationText).tooltip();
+
+              // Append the qualificationText span to the qualification paragraph
+              qualification.appendChild(qualificationText);
 
               const experience = document.createElement("p");
               experience.className = "card-text";
-              experience.textContent = `Experience: ${data.experience}`;
+              // Create a span element for the experience text
+              const experienceText = document.createElement("span");
+              experienceText.textContent = `Experience: ${data.experience}`;
+              // Add tooltip attributes
+              experienceText.setAttribute("data-toggle", "tooltip");
+              experienceText.setAttribute("title", data.experience);
+              // Apply text-truncate class and max-width style
+              experienceText.className = "d-inline-block text-truncate";
+              experienceText.style = "max-width: 250px;";
+
+              $(experienceText).tooltip();
+
+              // Append the experienceText span to the experience paragraph
+              experience.appendChild(experienceText);
 
               const status = document.createElement("p");
-              status.className = "card-text updateStatus";
-              status.textContent = `Status: ${data.status}`;
+              status.innerHTML = `Status: <span style="color: ${
+                data.status == "pending"
+                  ? "orange"
+                  : data.status == "accepted"
+                  ? "green"
+                  : "red"
+              }">${data.status}</span>`;
 
               const amount = document.createElement("p");
               amount.className = "card-text";
@@ -380,7 +500,7 @@ onAuthStateChanged(auth, async (user) => {
             // Function to create a card with data
             function createCard(data) {
               const cardDiv = document.createElement("div");
-              cardDiv.className = "col-md-4 mb-4";
+              cardDiv.className = "col-md-4 mb-4 text-center";
 
               const card = document.createElement("div");
               card.className = "card custom-card";
@@ -389,15 +509,26 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const amount = document.createElement("p");
               amount.className = "card-text";
               amount.textContent = `PKR ${data.amount}`;
 
+              const payment = document.createElement("p");
+              payment.className = "card-text";
+              payment.innerHTML = `Payment: <span style="color: ${
+                data.payment == "pending" ? "orange" : "green"
+              }">${data.payment}</span>`;
+
               cardBody.appendChild(title);
               cardBody.appendChild(amount);
+              cardBody.appendChild(payment);
 
               card.appendChild(cardBody);
               cardDiv.appendChild(card);
@@ -490,7 +621,7 @@ onAuthStateChanged(auth, async (user) => {
               const cardContainer = document.getElementById("cardContainer");
               const cardContainer1 = document.getElementById("cardContainer1");
               const cardContainer2 = document.getElementById("cardContainer2");
-
+              
               // Function to create a card with data
               function createCard(data) {
                 const cardDiv = document.createElement("div");
@@ -503,12 +634,28 @@ onAuthStateChanged(auth, async (user) => {
                 cardBody.className = "card-body";
 
                 const title = document.createElement("h5");
-                title.className = "card-title";
+                title.className = "card-title d-inline-block text-truncate";
                 title.textContent = data.subject;
+                title.setAttribute("data-toggle", "tooltip");
+                title.setAttribute("title", data.subject);
+                title.style = "max-width: 250px;";
+                $(title).tooltip();
 
                 const description = document.createElement("p");
                 description.className = "card-text";
-                description.textContent = `Description: ${data.description}`;
+                // Create a span element for the description text
+                const descriptionText = document.createElement("p");
+                descriptionText.textContent = `Description: ${data.description}`;
+                // Add tooltip attributes
+                descriptionText.setAttribute("data-toggle", "tooltip");
+                descriptionText.setAttribute("title", data.description);
+                // Initialize tooltip
+                descriptionText.className = "d-inline-block text-truncate";
+                descriptionText.style = "max-width: 250px;";
+
+                $(descriptionText).tooltip();
+
+                description.appendChild(descriptionText);
 
                 const time = document.createElement("p");
                 time.className = "card-text";
@@ -540,16 +687,46 @@ onAuthStateChanged(auth, async (user) => {
                 cardBody1.className = "card-body";
 
                 const title1 = document.createElement("h5");
-                title1.className = "card-title";
+                title1.className = "card-title d-inline-block text-truncate";
                 title1.textContent = data1.subject;
+                title1.setAttribute("data-toggle", "tooltip");
+                title1.setAttribute("title", data1.subject);
+                title1.style = "max-width: 250px;";
+                $(title1).tooltip();
 
                 const qualification = document.createElement("p");
-                qualification.className = "card-text";
-                qualification.textContent = `Qualification: ${data1.qualification}`;
+              qualification.className = "card-text";
+              // Create a span element for the qualification text
+              const qualificationText = document.createElement("span");
+              qualificationText.textContent = `Qualification: ${data1.qualification}`;
+              // Add tooltip attributes
+              qualificationText.setAttribute("data-toggle", "tooltip");
+              qualificationText.setAttribute("title", data1.qualification);
+              // Apply text-truncate class and max-width style
+              qualificationText.className = "d-inline-block text-truncate";
+              qualificationText.style = "max-width: 250px;";
 
-                const experience = document.createElement("p");
-                experience.className = "card-text";
-                experience.textContent = `Experience: ${data1.experience}`;
+              $(qualificationText).tooltip();
+
+              // Append the qualificationText span to the qualification paragraph
+              qualification.appendChild(qualificationText);
+
+              const experience = document.createElement("p");
+              experience.className = "card-text";
+              // Create a span element for the experience text
+              const experienceText = document.createElement("span");
+              experienceText.textContent = `Experience: ${data1.experience}`;
+              // Add tooltip attributes
+              experienceText.setAttribute("data-toggle", "tooltip");
+              experienceText.setAttribute("title", data1.experience);
+              // Apply text-truncate class and max-width style
+              experienceText.className = "d-inline-block text-truncate";
+              experienceText.style = "max-width: 250px;";
+
+              $(experienceText).tooltip();
+
+              // Append the experienceText span to the experience paragraph
+              experience.appendChild(experienceText);
 
                 const status = document.createElement("p");
                 status.className = "card-text";
@@ -581,8 +758,12 @@ onAuthStateChanged(auth, async (user) => {
                 cardBody2.className = "card-body";
 
                 const title2 = document.createElement("h5");
-                title2.className = "card-title";
+                title2.className = "card-title d-inline-block text-truncate";
                 title2.textContent = data2.subject;
+                title2.setAttribute("data-toggle", "tooltip");
+                title2.setAttribute("title", data2.subject);
+                title2.style = "max-width: 250px;";
+                $(title2).tooltip();
 
                 const teacher = document.createElement("p");
                 teacher.className = "card-title";
@@ -666,12 +847,28 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const description = document.createElement("p");
               description.className = "card-text";
-              description.textContent = `Description: ${data.description}`;
+              // Create a span element for the description text
+              const descriptionText = document.createElement("p");
+              descriptionText.textContent = `Description: ${data.description}`;
+              // Add tooltip attributes
+              descriptionText.setAttribute("data-toggle", "tooltip");
+              descriptionText.setAttribute("title", data.description);
+              // Initialize tooltip
+              descriptionText.className = "d-inline-block text-truncate";
+              descriptionText.style = "max-width: 250px;";
+
+              $(descriptionText).tooltip();
+
+              description.appendChild(descriptionText);
 
               const time = document.createElement("p");
               time.className = "card-text";
@@ -682,7 +879,6 @@ onAuthStateChanged(auth, async (user) => {
               amount.textContent = `PKR ${data.amount}`;
 
               const withdraw = document.createElement("a");
-              withdraw.href = "#";
               withdraw.className = "btn btn-danger";
               withdraw.textContent = "Withdraw";
               withdraw.style.color = "white";
@@ -693,9 +889,17 @@ onAuthStateChanged(auth, async (user) => {
                 // Show the modal
                 withdrawModal.show();
                 // Set up event listener for Confirm Withdraw button in the modal
-                confirmWithdrawButton.addEventListener("click", async () => {
+                confirmWithdrawButton.addEventListener("click", async (e) => {
+                  e.preventDefault();
+                  loader.classList.remove("visually-hidden");
+                confirmWithdrawButton.innerHTML = "";
+                confirmWithdrawButton.appendChild(loader);
+                confirmWithdrawButton.disabled = false;
                   // Perform the withdrawal action here
                   await deleteDocument(docId);
+
+                  confirmWithdrawButton.disabled = false;
+                  confirmWithdrawButton.innerHTML = "Withdraw";
                   withdrawModal.hide();
                 });
               });
@@ -761,7 +965,7 @@ onAuthStateChanged(auth, async (user) => {
             function createCard(data, docId) {
               const cardDiv = document.createElement("div");
               cardDiv.id = `card-${docId}`;
-              cardDiv.className = "col-md-4 mb-4";
+              cardDiv.className = "col-md-4 mb-4 text-center";
 
               const card = document.createElement("div");
               card.className = "card custom-card";
@@ -770,16 +974,46 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const qualification = document.createElement("p");
               qualification.className = "card-text";
-              qualification.textContent = `Qualification: ${data.qualification}`;
+              // Create a span element for the qualification text
+              const qualificationText = document.createElement("span");
+              qualificationText.textContent = `Qualification: ${data.qualification}`;
+              // Add tooltip attributes
+              qualificationText.setAttribute("data-toggle", "tooltip");
+              qualificationText.setAttribute("title", data.qualification);
+              // Apply text-truncate class and max-width style
+              qualificationText.className = "d-inline-block text-truncate";
+              qualificationText.style = "max-width: 250px;";
+
+              $(qualificationText).tooltip();
+
+              // Append the qualificationText span to the qualification paragraph
+              qualification.appendChild(qualificationText);
 
               const experience = document.createElement("p");
               experience.className = "card-text";
-              experience.textContent = `Experience: ${data.experience}`;
+              // Create a span element for the experience text
+              const experienceText = document.createElement("span");
+              experienceText.textContent = `Experience: ${data.experience}`;
+              // Add tooltip attributes
+              experienceText.setAttribute("data-toggle", "tooltip");
+              experienceText.setAttribute("title", data.experience);
+              // Apply text-truncate class and max-width style
+              experienceText.className = "d-inline-block text-truncate";
+              experienceText.style = "max-width: 250px;";
+
+              $(experienceText).tooltip();
+
+              // Append the experienceText span to the experience paragraph
+              experience.appendChild(experienceText);
 
               const status = document.createElement("p");
               status.className = "card-text updateStatus";
@@ -798,12 +1032,18 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.appendChild(status);
               if (data.status === "pending") {
                 const accept = document.createElement("a");
-                accept.href = "#";
                 accept.className = "btn btn-primary me-2";
                 accept.textContent = "Accept";
                 accept.style.color = "white";
+
+                const reject = document.createElement("a");
+                reject.className = "btn btn-danger";
+                reject.textContent = "Reject";
+                reject.style.color = "white";
+
                 accept.addEventListener("click", () => {
                   // Update modal content
+
                   withdrawModalBody.innerHTML =
                     "<p>Are you sure you want to accept the proposal?</p>";
                   // Show the modal
@@ -813,6 +1053,12 @@ onAuthStateChanged(auth, async (user) => {
                   withdrawModal.show();
                   confirmWithdrawButton.addEventListener("click", async () => {
                     // Perform the withdrawal action here
+
+                    loader.classList.remove("visually-hidden");
+                    confirmWithdrawButton.innerHTML = "";
+                    confirmWithdrawButton.appendChild(loader);
+                    confirmWithdrawButton.disabled = false;
+                    
                     addDoc(collection(db, "connections"), {
                       subject: data.subject,
                       student_id: currentUser.uid,
@@ -830,15 +1076,15 @@ onAuthStateChanged(auth, async (user) => {
                     status.className = "card-text";
                     await updateDocument1(docId);
                     updateStatus.innerHTML = `Status: <span style="color: green">accepted</span>`;
+                    confirmWithdrawButton.disabled = false;
+                    confirmWithdrawButton.innerHTML = "Accept";
                     withdrawModal.hide();
+                    accept.remove();
+                    reject.remove();
                   });
                 });
 
-                const reject = document.createElement("a");
-                reject.href = "#";
-                reject.className = "btn btn-danger";
-                reject.textContent = "Reject";
-                reject.style.color = "white";
+                
                 reject.addEventListener("click", () => {
                   // Update modal content
                   withdrawModalBody.innerHTML =
@@ -850,7 +1096,13 @@ onAuthStateChanged(auth, async (user) => {
                   withdrawModal.show();
                   // Set up event listener for Confirm Withdraw button in the modal
                   confirmWithdrawButton.addEventListener("click", async () => {
+                    loader.classList.remove("visually-hidden");
+                    confirmWithdrawButton.innerHTML = "";
+                    confirmWithdrawButton.appendChild(loader);
+                    confirmWithdrawButton.disabled = false;
                     await updateDocument(docId);
+                    confirmWithdrawButton.disabled = false;
+                    confirmWithdrawButton.innerHTML = "Submit Request";
                     withdrawModal.hide();
                   });
                 });
@@ -945,7 +1197,7 @@ onAuthStateChanged(auth, async (user) => {
             // Function to create a card with data
             function createCard(data) {
               const cardDiv = document.createElement("div");
-              cardDiv.className = "col-md-4 mb-4";
+              cardDiv.className = "col-md-4 mb-4 text-center";
 
               const card = document.createElement("div");
               card.className = "card custom-card";
@@ -954,9 +1206,13 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
-              
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
+
               const teacher = document.createElement("p");
               teacher.className = "card-title";
               teacher.textContent = `Teacher: ${data.teacher_name}`;
@@ -1016,12 +1272,28 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const description = document.createElement("p");
               description.className = "card-text";
-              description.textContent = `Description: ${data.description}`;
+              // Create a span element for the description text
+              const descriptionText = document.createElement("p");
+              descriptionText.textContent = `Description: ${data.description}`;
+              // Add tooltip attributes
+              descriptionText.setAttribute("data-toggle", "tooltip");
+              descriptionText.setAttribute("title", data.description);
+              // Initialize tooltip
+              descriptionText.className = "d-inline-block text-truncate";
+              descriptionText.style = "max-width: 250px;";
+
+              $(descriptionText).tooltip();
+
+              description.appendChild(descriptionText);
 
               const time = document.createElement("p");
               time.className = "card-text";
@@ -1053,16 +1325,46 @@ onAuthStateChanged(auth, async (user) => {
               cardBody1.className = "card-body";
 
               const title1 = document.createElement("h5");
-              title1.className = "card-title";
+              title1.className = "card-title d-inline-block text-truncate";
               title1.textContent = data1.subject;
+              title1.setAttribute("data-toggle", "tooltip");
+              title1.setAttribute("title", data1.subject);
+              title1.style = "max-width: 250px;";
+              $(title1).tooltip();
 
               const qualification = document.createElement("p");
               qualification.className = "card-text";
-              qualification.textContent = `Qualification: ${data1.qualification}`;
+              // Create a span element for the qualification text
+              const qualificationText = document.createElement("span");
+              qualificationText.textContent = `Qualification: ${data1.qualification}`;
+              // Add tooltip attributes
+              qualificationText.setAttribute("data-toggle", "tooltip");
+              qualificationText.setAttribute("title", data1.qualification);
+              // Apply text-truncate class and max-width style
+              qualificationText.className = "d-inline-block text-truncate";
+              qualificationText.style = "max-width: 250px;";
+
+              $(qualificationText).tooltip();
+
+              // Append the qualificationText span to the qualification paragraph
+              qualification.appendChild(qualificationText);
 
               const experience = document.createElement("p");
               experience.className = "card-text";
-              experience.textContent = `Experience: ${data1.experience}`;
+              // Create a span element for the experience text
+              const experienceText = document.createElement("span");
+              experienceText.textContent = `Experience: ${data1.experience}`;
+              // Add tooltip attributes
+              experienceText.setAttribute("data-toggle", "tooltip");
+              experienceText.setAttribute("title", data1.experience);
+              // Apply text-truncate class and max-width style
+              experienceText.className = "d-inline-block text-truncate";
+              experienceText.style = "max-width: 250px;";
+
+              $(experienceText).tooltip();
+
+              // Append the experienceText span to the experience paragraph
+              experience.appendChild(experienceText);
 
               const amount1 = document.createElement("p");
               amount1.className = "card-text";
@@ -1089,8 +1391,12 @@ onAuthStateChanged(auth, async (user) => {
               cardBody2.className = "card-body";
 
               const title2 = document.createElement("h5");
-              title2.className = "card-title";
+              title2.className = "card-title d-inline-block text-truncate";
               title2.textContent = data2.subject;
+              title2.setAttribute("data-toggle", "tooltip");
+              title2.setAttribute("title", data2.subject);
+              title2.style = "max-width: 250px;";
+              $(title2).tooltip();
 
               const student = document.createElement("p");
               student.className = "card-title";
@@ -1178,12 +1484,28 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const description = document.createElement("p");
               description.className = "card-text";
-              description.textContent = `Description: ${data.description}`;
+              // Create a span element for the description text
+              const descriptionText = document.createElement("p");
+              descriptionText.textContent = `Description: ${data.description}`;
+              // Add tooltip attributes
+              descriptionText.setAttribute("data-toggle", "tooltip");
+              descriptionText.setAttribute("title", data.description);
+              // Initialize tooltip
+              descriptionText.className = "d-inline-block text-truncate";
+              descriptionText.style = "max-width: 250px;";
+
+              $(descriptionText).tooltip();
+
+              description.appendChild(descriptionText);
 
               const time = document.createElement("p");
               time.className = "card-text";
@@ -1194,7 +1516,6 @@ onAuthStateChanged(auth, async (user) => {
               amount.textContent = `PKR ${data.amount}`;
 
               const sendProposal = document.createElement("a");
-              sendProposal.href = "#";
               sendProposal.className = "btn btn-primary";
               sendProposal.textContent = "Send proposal";
               sendProposal.style.color = "white";
@@ -1205,9 +1526,14 @@ onAuthStateChanged(auth, async (user) => {
 
                 // Set up an event listener for the form submission in the modal
                 const reqForm = document.querySelector(".reqModal");
+                const submitButton = document.querySelector(".generate-btn");
                 reqForm.addEventListener("submit", async (e) => {
                   e.preventDefault();
 
+                  loader.classList.remove("visually-hidden");
+                  submitButton.innerHTML = "";
+                  submitButton.appendChild(loader);
+                  submitButton.disabled = false;
                   // Get values from the form fields
                   const qualification =
                     document.getElementById("recipient-name").value;
@@ -1230,8 +1556,10 @@ onAuthStateChanged(auth, async (user) => {
                     amount: amount,
                     created_at: serverTimestamp(), // You can add a timestamp for the created date
                   });
-
+                  submitButton.disabled = false;
+                  submitButton.innerHTML = "Generate";
                   modal.hide();
+                  window.location.href = "allproposals.html";
                 });
               });
 
@@ -1279,7 +1607,7 @@ onAuthStateChanged(auth, async (user) => {
             function createCard(data, docId) {
               const cardDiv = document.createElement("div");
               cardDiv.id = `card-${docId}`;
-              cardDiv.className = "col-md-4 mb-4";
+              cardDiv.className = "col-md-4 mb-4 text-center";
 
               const card = document.createElement("div");
               card.className = "card custom-card";
@@ -1288,16 +1616,62 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const qualification = document.createElement("p");
               qualification.className = "card-text";
-              qualification.textContent = `Qualification: ${data.qualification}`;
+              // Create a span element for the qualification text
+              const qualificationText = document.createElement("span");
+              qualificationText.textContent = `Qualification: ${data.qualification}`;
+              // Add tooltip attributes
+              qualificationText.setAttribute("data-toggle", "tooltip");
+              qualificationText.setAttribute("title", data.qualification);
+              // Apply text-truncate class and max-width style
+              qualificationText.className = "d-inline-block text-truncate";
+              qualificationText.style = "max-width: 250px;";
+
+              $(qualificationText).tooltip();
+
+              // Append the qualificationText span to the qualification paragraph
+              qualification.appendChild(qualificationText);
 
               const experience = document.createElement("p");
               experience.className = "card-text";
-              experience.textContent = `Experience: ${data.experience}`;
+              // Create a span element for the experience text
+              const experienceText = document.createElement("span");
+              experienceText.textContent = `Experience: ${data.experience}`;
+              // Add tooltip attributes
+              experienceText.setAttribute("data-toggle", "tooltip");
+              experienceText.setAttribute("title", data.experience);
+              // Apply text-truncate class and max-width style
+              experienceText.className = "d-inline-block text-truncate";
+              experienceText.style = "max-width: 250px;";
+
+              $(experienceText).tooltip();
+
+              // Append the experienceText span to the experience paragraph
+              experience.appendChild(experienceText);
+
+              const description = document.createElement("p");
+              description.className = "card-text";
+              // Create a span element for the description text
+              const descriptionText = document.createElement("p");
+              descriptionText.textContent = `Description: ${data.description}`;
+              // Add tooltip attributes
+              descriptionText.setAttribute("data-toggle", "tooltip");
+              descriptionText.setAttribute("title", data.description);
+              // Initialize tooltip
+              descriptionText.className = "d-inline-block text-truncate";
+              descriptionText.style = "max-width: 250px;";
+
+              $(descriptionText).tooltip();
+
+              description.appendChild(descriptionText);
 
               const amount = document.createElement("p");
               amount.className = "card-text";
@@ -1305,8 +1679,11 @@ onAuthStateChanged(auth, async (user) => {
 
               const status = document.createElement("p");
               status.innerHTML = `Status: <span style="color: ${
-                data.status == "pending" ? "orange" : 
-                (data.status == "accepted" ? "green" : "red")
+                data.status == "pending"
+                  ? "orange"
+                  : data.status == "accepted"
+                  ? "green"
+                  : "red"
               }">${data.status}</span>`;
 
               cardBody.appendChild(title);
@@ -1316,7 +1693,6 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.appendChild(status);
               if (data.status === "pending") {
                 const withdraw = document.createElement("a");
-                withdraw.href = "#";
                 withdraw.className = "btn btn-danger";
                 withdraw.textContent = "Withdraw";
                 withdraw.style.color = "white";
@@ -1327,9 +1703,17 @@ onAuthStateChanged(auth, async (user) => {
                   // Show the modal
                   withdrawModal.show();
                   // Set up event listener for Confirm Withdraw button in the modal
-                  confirmWithdrawButton.addEventListener("click", async () => {
-                    // Perform the withdrawal action here
+                  confirmWithdrawButton.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    
+                  loader.classList.remove("visually-hidden");
+                  confirmWithdrawButton.innerHTML = "";
+                  confirmWithdrawButton.appendChild(loader);
+                  confirmWithdrawButton.disabled = false;
                     await deleteDocument(docId);
+
+                    confirmWithdrawButton.disabled = false;
+                    confirmWithdrawButton.innerHTML = "Withdraw";
                     withdrawModal.hide();
                   });
                 });
@@ -1439,7 +1823,7 @@ onAuthStateChanged(auth, async (user) => {
             // Function to create a card with data
             function createCard(data, docId) {
               const cardDiv = document.createElement("div");
-              cardDiv.className = "col-md-4 mb-4";
+              cardDiv.className = "col-md-4 mb-4 text-center";
 
               const card = document.createElement("div");
               card.className = "card custom-card";
@@ -1448,8 +1832,12 @@ onAuthStateChanged(auth, async (user) => {
               cardBody.className = "card-body";
 
               const title = document.createElement("h5");
-              title.className = "card-title";
+              title.className = "card-title d-inline-block text-truncate";
               title.textContent = data.subject;
+              title.setAttribute("data-toggle", "tooltip");
+              title.setAttribute("title", data.subject);
+              title.style = "max-width: 250px;";
+              $(title).tooltip();
 
               const student = document.createElement("p");
               student.className = "card-title";
@@ -1461,11 +1849,12 @@ onAuthStateChanged(auth, async (user) => {
                 data.payment == "pending" ? "orange" : "green"
               }">${data.payment}</span>`;
 
-
-
               const payAmount = document.createElement("p");
               payAmount.className = "card-text";
-              payAmount.textContent = `Pay 10%:  PKR ${((data.amount/100)*10).toFixed(0)}`;
+              payAmount.textContent = `Pay 10%:  PKR ${(
+                (data.amount / 100) *
+                10
+              ).toFixed(0)}`;
 
               const amount = document.createElement("p");
               amount.className = "card-text";
@@ -1481,7 +1870,9 @@ onAuthStateChanged(auth, async (user) => {
                 pay.className = "btn btn-primary me-2";
                 pay.textContent = "Pay";
                 pay.style.color = "white";
-                pay.addEventListener("click", () => {
+                pay.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  
                   // Update modal content
                   withdrawModalBody.innerHTML =
                     "<p>Are you sure you want to pay the amount?</p>";
@@ -1491,14 +1882,23 @@ onAuthStateChanged(auth, async (user) => {
                   modalTitle.innerHTML = "Payment confirmation";
                   withdrawModal.show();
                   // Set up event listener for Confirm Withdraw button in the modal
-                  confirmWithdrawButton.addEventListener("click", async () => {
+                  confirmWithdrawButton.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    
+                  loader.classList.remove("visually-hidden");
+                  confirmWithdrawButton.innerHTML = "";
+                  confirmWithdrawButton.appendChild(loader);
+                  confirmWithdrawButton.disabled = false;
+
                     await updateDocument(docId);
                     payment.innerHTML = `Payment: <span style="color: green">paid</span>`;
                     pay.remove();
+                    confirmWithdrawButton.disabled = false;
+                    confirmWithdrawButton.innerHTML = "Pay";
                     withdrawModal.hide();
                   });
                 });
-                
+
                 cardBody.appendChild(pay);
               }
 
@@ -1549,6 +1949,19 @@ onAuthStateChanged(auth, async (user) => {
 
 // const toast = new bootstrap.Toast(document.querySelector(".toast"));
 // toast.show();
+let currentUrl = window.location.href;
+
+// Get all links in the sidebar
+let sidebarLinks = document.querySelectorAll('.sidebar-cont .nav-link');
+
+// Loop through each link and check if its href matches the current URL
+sidebarLinks.forEach(function(link) {
+    if (link.href === currentUrl) {
+        // Add the "active" class to the parent list item
+        link.parentElement.classList.add('active');
+    }
+});
+
 document
   .querySelector(".sign-out-option")
   .addEventListener("click", function (event) {
