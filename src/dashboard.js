@@ -32,11 +32,10 @@ const db = getFirestore(firebaseapp);
 // window.addEventListener("load", function() {
 //     document.getElementById("loader").style.display = "none";
 // });
-setTimeout(() => {
+
   const screenSpinnerContainer = document.getElementById("screen-spinner-container");
   // Hide the spinner by setting its display property to "none"
-  screenSpinnerContainer.style.display = "none";
-}, 5000);
+  
 
 
 onAuthStateChanged(auth, async (user) => {
@@ -237,6 +236,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv2.appendChild(card2);
 
               cardContainer2.appendChild(cardDiv2);
+              screenSpinnerContainer.style.display = "none";
             }
             async function fetchDataFromFirestore() {
               const requestsCollection = collection(db, "requests");
@@ -333,6 +333,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
@@ -427,6 +428,7 @@ onAuthStateChanged(auth, async (user) => {
               card.appendChild(cardBody);
               cardDiv.appendChild(card);
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             filter.addEventListener("change", (e) => {
@@ -534,6 +536,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
@@ -560,6 +563,7 @@ onAuthStateChanged(auth, async (user) => {
             window.location.href.includes("request.html")
           ) {
             if (window.location.href.includes("request.html")) {
+                screenSpinnerContainer.style.display = "none";
               const requestForm = document.querySelector(".reqForm");
               const submitButton = requestForm.querySelector(
                 'button[type="submit"]'
@@ -781,6 +785,7 @@ onAuthStateChanged(auth, async (user) => {
                 cardDiv2.appendChild(card2);
 
                 cardContainer2.appendChild(cardDiv2);
+                screenSpinnerContainer.style.display = "none";
               }
               async function fetchDataFromFirestore() {
                 const requestsCollection = collection(db, "requests");
@@ -913,6 +918,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
@@ -1114,6 +1120,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             filter.addEventListener("change", (e) => {
@@ -1229,6 +1236,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
@@ -1421,6 +1429,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv2.appendChild(card2);
 
               cardContainer2.appendChild(cardDiv2);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
@@ -1573,6 +1582,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
@@ -1724,6 +1734,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
             filter.addEventListener("change", (e) => {
               e.preventDefault();
@@ -1906,6 +1917,7 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
+              screenSpinnerContainer.style.display = "none";
             }
 
             async function fetchDataFromFirestore() {
