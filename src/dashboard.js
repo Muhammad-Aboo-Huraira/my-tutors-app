@@ -61,6 +61,7 @@ onAuthStateChanged(auth, async (user) => {
         if (userType === "admin") {
           document.getElementById("usernamePlaceholder").innerHTML = username;
           document.getElementById("requestTeacherLink").remove();
+          document.getElementById("requestTeacherLinkNav").remove();
 
           if (window.location.href.includes("dashboard.html")) {
             const cardContainer = document.getElementById("cardContainer");
@@ -1262,7 +1263,8 @@ onAuthStateChanged(auth, async (user) => {
             "usernamePlaceholder"
           ).innerHTML = `Teacher: ${username}`;
           document.getElementById("requestTeacherLink").remove();
-
+          document.getElementById("requestTeacherLinkNav").remove();
+          
           if (window.location.href.includes("dashboard.html")) {
             const cardContainer = document.getElementById("cardContainer");
             const cardContainer1 = document.getElementById("cardContainer1");
@@ -1973,6 +1975,14 @@ sidebarLinks.forEach(function(link) {
         link.parentElement.classList.add('active');
     }
 });
+// document.getElementById('sidebarToggle').addEventListener('click', function () {
+//   var sidebar = document.getElementById('sidebar');
+//   if (sidebar.classList.contains('show')) {
+//       sidebar.classList.remove('show');
+//   } else {
+//       sidebar.classList.add('show');
+//   }
+// });
 
 document
   .querySelector(".sign-out-option")
