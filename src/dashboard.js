@@ -1582,7 +1582,7 @@ onAuthStateChanged(auth, async (user) => {
                   submitButton.disabled = false;
                   submitButton.innerHTML = "Generate";
                   modal.hide();
-                  window.location.href = "allproposals.html";
+                  // window.location.href = "allproposals.html";
                 });
               });
 
