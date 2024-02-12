@@ -33,10 +33,10 @@ const db = getFirestore(firebaseapp);
 //     document.getElementById("loader").style.display = "none";
 // });
 
-  const screenSpinnerContainer = document.getElementById("screen-spinner-container");
-  // Hide the spinner by setting its display property to "none"
-  
-
+const screenSpinnerContainer = document.getElementById(
+  "screen-spinner-container"
+);
+const toast = new bootstrap.Toast(document.querySelector(".toast"));
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -564,7 +564,7 @@ onAuthStateChanged(auth, async (user) => {
             window.location.href.includes("request.html")
           ) {
             if (window.location.href.includes("request.html")) {
-                screenSpinnerContainer.style.display = "none";
+              screenSpinnerContainer.style.display = "none";
               const requestForm = document.querySelector(".reqForm");
               const submitButton = requestForm.querySelector(
                 'button[type="submit"]'
@@ -614,7 +614,10 @@ onAuthStateChanged(auth, async (user) => {
                 });
 
                 requestForm.reset();
-                setTimeout(() => {
+                document.querySelector("#loginToast .toast-body").innerText =
+                    "Request added successfully!";
+                  toast.show();
+                  setTimeout(() => {
                   submitButton.disabled = false;
                   submitButton.innerHTML = "Submit Request";
                   window.location.href = "allrequests.html";
@@ -626,7 +629,7 @@ onAuthStateChanged(auth, async (user) => {
               const cardContainer = document.getElementById("cardContainer");
               const cardContainer1 = document.getElementById("cardContainer1");
               const cardContainer2 = document.getElementById("cardContainer2");
-              
+
               // Function to create a card with data
               function createCard(data) {
                 const cardDiv = document.createElement("div");
@@ -700,38 +703,38 @@ onAuthStateChanged(auth, async (user) => {
                 $(title1).tooltip();
 
                 const qualification = document.createElement("p");
-              qualification.className = "card-text";
-              // Create a span element for the qualification text
-              const qualificationText = document.createElement("span");
-              qualificationText.textContent = `Qualification: ${data1.qualification}`;
-              // Add tooltip attributes
-              qualificationText.setAttribute("data-toggle", "tooltip");
-              qualificationText.setAttribute("title", data1.qualification);
-              // Apply text-truncate class and max-width style
-              qualificationText.className = "d-inline-block text-truncate";
-              qualificationText.style = "max-width: 250px;";
+                qualification.className = "card-text";
+                // Create a span element for the qualification text
+                const qualificationText = document.createElement("span");
+                qualificationText.textContent = `Qualification: ${data1.qualification}`;
+                // Add tooltip attributes
+                qualificationText.setAttribute("data-toggle", "tooltip");
+                qualificationText.setAttribute("title", data1.qualification);
+                // Apply text-truncate class and max-width style
+                qualificationText.className = "d-inline-block text-truncate";
+                qualificationText.style = "max-width: 250px;";
 
-              $(qualificationText).tooltip();
+                $(qualificationText).tooltip();
 
-              // Append the qualificationText span to the qualification paragraph
-              qualification.appendChild(qualificationText);
+                // Append the qualificationText span to the qualification paragraph
+                qualification.appendChild(qualificationText);
 
-              const experience = document.createElement("p");
-              experience.className = "card-text";
-              // Create a span element for the experience text
-              const experienceText = document.createElement("span");
-              experienceText.textContent = `Experience: ${data1.experience}`;
-              // Add tooltip attributes
-              experienceText.setAttribute("data-toggle", "tooltip");
-              experienceText.setAttribute("title", data1.experience);
-              // Apply text-truncate class and max-width style
-              experienceText.className = "d-inline-block text-truncate";
-              experienceText.style = "max-width: 250px;";
+                const experience = document.createElement("p");
+                experience.className = "card-text";
+                // Create a span element for the experience text
+                const experienceText = document.createElement("span");
+                experienceText.textContent = `Experience: ${data1.experience}`;
+                // Add tooltip attributes
+                experienceText.setAttribute("data-toggle", "tooltip");
+                experienceText.setAttribute("title", data1.experience);
+                // Apply text-truncate class and max-width style
+                experienceText.className = "d-inline-block text-truncate";
+                experienceText.style = "max-width: 250px;";
 
-              $(experienceText).tooltip();
+                $(experienceText).tooltip();
 
-              // Append the experienceText span to the experience paragraph
-              experience.appendChild(experienceText);
+                // Append the experienceText span to the experience paragraph
+                experience.appendChild(experienceText);
 
                 const status = document.createElement("p");
                 status.className = "card-text";
@@ -786,8 +789,8 @@ onAuthStateChanged(auth, async (user) => {
                 cardDiv2.appendChild(card2);
 
                 cardContainer2.appendChild(cardDiv2);
-                screenSpinnerContainer.style.display = "none";
               }
+              screenSpinnerContainer.style.display = "none";
               async function fetchDataFromFirestore() {
                 const requestsCollection = collection(db, "requests");
 
@@ -898,11 +901,13 @@ onAuthStateChanged(auth, async (user) => {
                 confirmWithdrawButton.addEventListener("click", async (e) => {
                   e.preventDefault();
                   loader.classList.remove("visually-hidden");
-                confirmWithdrawButton.innerHTML = "";
-                confirmWithdrawButton.appendChild(loader);
-                confirmWithdrawButton.disabled = false;
-                  // Perform the withdrawal action here
+                  confirmWithdrawButton.innerHTML = "";
+                  confirmWithdrawButton.appendChild(loader);
+                  confirmWithdrawButton.disabled = false;
                   await deleteDocument(docId);
+                  document.querySelector("#loginToast .toast-body").innerText =
+                    "Withdrawn request successfully!";
+                  toast.show();
 
                   confirmWithdrawButton.disabled = false;
                   confirmWithdrawButton.innerHTML = "Withdraw";
@@ -919,8 +924,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
 
             async function fetchDataFromFirestore() {
               const requestsCollection = collection(db, "requests");
@@ -945,7 +950,6 @@ onAuthStateChanged(auth, async (user) => {
 
               try {
                 await deleteDoc(doc(requestsCollection, docId));
-                console.log("Document successfully deleted!");
 
                 const cardDiv = document.getElementById(`card-${docId}`);
                 if (cardDiv) {
@@ -1065,7 +1069,7 @@ onAuthStateChanged(auth, async (user) => {
                     confirmWithdrawButton.innerHTML = "";
                     confirmWithdrawButton.appendChild(loader);
                     confirmWithdrawButton.disabled = false;
-                    
+
                     addDoc(collection(db, "connections"), {
                       subject: data.subject,
                       student_id: currentUser.uid,
@@ -1078,6 +1082,9 @@ onAuthStateChanged(auth, async (user) => {
                     }).catch((error) => {
                       console.error("Error adding document: ", error);
                     });
+                    document.querySelector("#loginToast .toast-body").innerText =
+                    "Proposal accepted!";
+                  toast.show();
                     const updateStatus =
                       document.querySelector(".updateStatus");
                     status.className = "card-text";
@@ -1091,7 +1098,6 @@ onAuthStateChanged(auth, async (user) => {
                   });
                 });
 
-                
                 reject.addEventListener("click", () => {
                   // Update modal content
                   withdrawModalBody.innerHTML =
@@ -1108,6 +1114,9 @@ onAuthStateChanged(auth, async (user) => {
                     confirmWithdrawButton.appendChild(loader);
                     confirmWithdrawButton.disabled = false;
                     await updateDocument(docId);
+                    document.querySelector("#loginToast .toast-body").innerText =
+                    "Proposal rejected successfully!";
+                  toast.show();
                     confirmWithdrawButton.disabled = false;
                     confirmWithdrawButton.innerHTML = "Submit Request";
                     withdrawModal.hide();
@@ -1121,8 +1130,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
 
             filter.addEventListener("change", (e) => {
               e.preventDefault();
@@ -1237,8 +1246,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
 
             async function fetchDataFromFirestore() {
               const connections = collection(db, "connections");
@@ -1264,7 +1273,7 @@ onAuthStateChanged(auth, async (user) => {
           ).innerHTML = `Teacher: ${username}`;
           document.getElementById("requestTeacherLink").remove();
           document.getElementById("requestTeacherLinkNav").remove();
-          
+
           if (window.location.href.includes("dashboard.html")) {
             const cardContainer = document.getElementById("cardContainer");
             const cardContainer1 = document.getElementById("cardContainer1");
@@ -1431,8 +1440,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv2.appendChild(card2);
 
               cardContainer2.appendChild(cardDiv2);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
 
             async function fetchDataFromFirestore() {
               const requestsCollection = collection(db, "requests");
@@ -1567,6 +1576,9 @@ onAuthStateChanged(auth, async (user) => {
                     amount: amount,
                     created_at: serverTimestamp(), // You can add a timestamp for the created date
                   });
+                  document.querySelector("#loginToast .toast-body").innerText =
+                    "Proposal sent successfully!";
+                  toast.show();
                   submitButton.disabled = false;
                   submitButton.innerHTML = "Generate";
                   modal.hide();
@@ -1584,8 +1596,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
 
             async function fetchDataFromFirestore() {
               const requestsCollection = collection(db, "requests");
@@ -1717,13 +1729,15 @@ onAuthStateChanged(auth, async (user) => {
                   // Set up event listener for Confirm Withdraw button in the modal
                   confirmWithdrawButton.addEventListener("click", async (e) => {
                     e.preventDefault();
-                    
-                  loader.classList.remove("visually-hidden");
-                  confirmWithdrawButton.innerHTML = "";
-                  confirmWithdrawButton.appendChild(loader);
-                  confirmWithdrawButton.disabled = false;
-                    await deleteDocument(docId);
 
+                    loader.classList.remove("visually-hidden");
+                    confirmWithdrawButton.innerHTML = "";
+                    confirmWithdrawButton.appendChild(loader);
+                    confirmWithdrawButton.disabled = false;
+                    await deleteDocument(docId);
+                    document.querySelector("#loginToast .toast-body").innerText =
+                    "Withdrawn proposal successfully!";
+                  toast.show();
                     confirmWithdrawButton.disabled = false;
                     confirmWithdrawButton.innerHTML = "Withdraw";
                     withdrawModal.hide();
@@ -1736,8 +1750,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
             filter.addEventListener("change", (e) => {
               e.preventDefault();
               fetchDataFromFirestore(filter.value);
@@ -1885,7 +1899,7 @@ onAuthStateChanged(auth, async (user) => {
                 pay.style.color = "white";
                 pay.addEventListener("click", (e) => {
                   e.preventDefault();
-                  
+
                   // Update modal content
                   withdrawModalBody.innerHTML =
                     "<p>Are you sure you want to pay the amount?</p>";
@@ -1897,13 +1911,15 @@ onAuthStateChanged(auth, async (user) => {
                   // Set up event listener for Confirm Withdraw button in the modal
                   confirmWithdrawButton.addEventListener("click", async (e) => {
                     e.preventDefault();
-                    
-                  loader.classList.remove("visually-hidden");
-                  confirmWithdrawButton.innerHTML = "";
-                  confirmWithdrawButton.appendChild(loader);
-                  confirmWithdrawButton.disabled = false;
 
+                    loader.classList.remove("visually-hidden");
+                    confirmWithdrawButton.innerHTML = "";
+                    confirmWithdrawButton.appendChild(loader);
+                    confirmWithdrawButton.disabled = false;
                     await updateDocument(docId);
+                    document.querySelector("#loginToast .toast-body").innerText =
+                    "Payment sent successfully!";
+                    toast.show();
                     payment.innerHTML = `Payment: <span style="color: green">paid</span>`;
                     pay.remove();
                     confirmWithdrawButton.disabled = false;
@@ -1919,8 +1935,8 @@ onAuthStateChanged(auth, async (user) => {
               cardDiv.appendChild(card);
 
               cardContainer.appendChild(cardDiv);
-              screenSpinnerContainer.style.display = "none";
             }
+            screenSpinnerContainer.style.display = "none";
 
             async function fetchDataFromFirestore() {
               const connections = collection(db, "connections");
@@ -1960,29 +1976,18 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "index.html";
   }
 });
-
-// const toast = new bootstrap.Toast(document.querySelector(".toast"));
-// toast.show();
 let currentUrl = window.location.href;
 
 // Get all links in the sidebar
-let sidebarLinks = document.querySelectorAll('.sidebar-cont .nav-link');
+let sidebarLinks = document.querySelectorAll(".sidebar-cont .nav-link");
 
 // Loop through each link and check if its href matches the current URL
-sidebarLinks.forEach(function(link) {
-    if (link.href === currentUrl) {
-        // Add the "active" class to the parent list item
-        link.parentElement.classList.add('active');
-    }
+sidebarLinks.forEach(function (link) {
+  if (link.href === currentUrl) {
+    // Add the "active" class to the parent list item
+    link.parentElement.classList.add("active");
+  }
 });
-// document.getElementById('sidebarToggle').addEventListener('click', function () {
-//   var sidebar = document.getElementById('sidebar');
-//   if (sidebar.classList.contains('show')) {
-//       sidebar.classList.remove('show');
-//   } else {
-//       sidebar.classList.add('show');
-//   }
-// });
 
 document
   .querySelector(".sign-out-option")
